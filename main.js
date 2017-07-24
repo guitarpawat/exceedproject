@@ -82,10 +82,24 @@ $(document).ready(function() {
     );
   };
 
+  function getTemp() {
+    $.ajax({
+      url: link+"?get=ar_temp"
+    }).done(function(data) {
+        $("#temp-pic").attr("src","./assets/img/temp.png");
+        $("#temp-txt").html("Temperature :<br/>"+data+" ℃");
+    }).fail(function() {
+        console.error("Cannot connect to server.");
+      }
+    );
+  };
+
+
   function get() {
     getCry();
     getSwing();
     getSound();
+    getTemp();
   };
 
   function setSound(i) {
