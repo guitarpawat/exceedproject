@@ -88,8 +88,6 @@ $(document).ready(function() {
     getSound();
   };
 
-  window.get = get;
-
   function setSound(i) {
     if(i==0 || i==1 || i==2) {
       set("se_sound",i);
@@ -108,7 +106,7 @@ $(document).ready(function() {
     }
   };
 
-  setInterval(get,1000);
+  setInterval(get,500);
 
   $("#swing-pic").click(function() {
     if(swing == 0) set("se_swing",1);
