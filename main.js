@@ -1,6 +1,8 @@
 $(document).ready(function() {
   var link = "http://192.168.137.1/exceed/";
   var swing,sound;
+  var n = 0;
+  var isWake = true;
 
   function set(key,value) {
     var set = link+"?set="+key+","+value;
@@ -14,22 +16,79 @@ $(document).ready(function() {
     );
   };
 
+  function renderStat(dn,dwake) {
+    if(dn == 0) {
+      $("#stat-pic").attr("src","./assets/img/stat0.png");
+      $("#stat-txt").html("Average sleeping time :<br/>No stat");
+    }
+    else {
+      $("#stat-pic").attr("src","./assets/img/stat1.png");
+      $("#stat-txt").html("Average sleeping time :<br/>"+(dn/dwake/32).toFixed(2)+" hours");
+    }
+  };
+
+  function initStat() {
+    $.ajax({
+      url: link+"?get=n"
+    }).done(function(dn) {
+      $.ajax({
+        url: link+"?get=wake"
+      }).done(function(dwake) {
+        renderStat(parseInt(dn),parseInt(dwake));
+      }).fail(function() {
+        console.error("Cannot connect to server.");
+      });
+    }).fail(function() {
+      console.error("Cannot connect to server.");
+    });
+  };
+
   function getCry() {
+    var data1;
     $.ajax({
       url: link+"?get=ar_cry"
-    }).done(function(data) {
-        if(data == 1) {
-          $("#cry-pic").attr("src","./assets/img/cry1.png");
-          $("#cry-txt").html("The baby is crying.");
+    }).done(function(data1) {
+      $.ajax({
+        url: link+"?get=ar_move"
+      }).done(function(data2) {
+        if(data1 == 1 || data2 == 1) {
+          $("#cry-pic").attr("src","./assets/img/wake.png");
+          $("#cry-txt").html("The baby is wake up.");
+          if(!isWake) {
+            $.ajax({
+              url: link+"?get=n"
+            }).done(function(dn) {
+              $.ajax({
+                url: link+"?get=wake"
+              }).done(function(dwake) {
+                var tmp = parseInt(dn)+parseInt(n);
+                renderStat(tmp,parseInt(dwake)+1);
+                set("n",tmp);
+                set("wake",parseInt(dwake)+1);
+                n = 0;
+              }).fail(function() {
+                console.error("Cannot connect to server.");
+              });
+            }).fail(function() {
+              console.error("Cannot connect to server.");
+            });
+          }
+          isWake = true;
         }
-        else if(data == 0) {
-          $("#cry-pic").attr("src","./assets/img/cry0.png");
-          $("#cry-txt").html("Not crying.");
+        else if(data1 == 0 && data2 == 0) {
+          $("#cry-pic").attr("src","./assets/img/sleep.png");
+          $("#cry-txt").html("The baby is sleeping.");
+          n++;
+          isWake = false;
         }
         else {
           $("#cry-pic").attr("src","./assets/img/cry.png");
           $("#cry-txt").html("No data.");
         }
+      }).fail(function() {
+          console.error("Cannot connect to server.");
+        }
+      );
     }).fail(function() {
         console.error("Cannot connect to server.");
       }
@@ -92,6 +151,7 @@ $(document).ready(function() {
         console.error("Cannot connect to server.");
       }
     );
+
   };
 
 
@@ -101,6 +161,13 @@ $(document).ready(function() {
     getSound();
     getTemp();
   };
+
+  function init() {
+    get();
+    initStat();
+  }
+
+  init();
 
   function setSound(i) {
     if(i==0 || i==1 || i==2) {
@@ -131,4 +198,5 @@ $(document).ready(function() {
     if(sound == 0) set("se_sound",1);
     else if(sound == 1) set("se_sound",0);;
   });
+
 });
