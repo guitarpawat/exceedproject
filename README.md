@@ -7,10 +7,12 @@ If you want to know more about this project, please go to http://exceed.cpe.ku.a
 ### Backend
 Place only **index.php** to the backend server and deploy it with Apache httpd with PHP.
 
-* To set the `key` and `value`, use `./index.php?set=key,value`.
-* To get the `value`, use `./index.php?get=value`.
+* To **set** the `key` and `value`, use `./index.php?set=key,value`.
+* To **get** the `value`, use `./index.php?get=value`.
+
+***Please place `index.php` in the blank folder because it will be create some fileIO***
 
 ### Frontend
 Place the **all** of the files in fronend folder to desired path.
 
-* In main.css, change the `link` variable to the server IP or hostname.
+* In main.css, change the `link` variable to the backend server IP or hostname with path.
