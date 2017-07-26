@@ -10,7 +10,7 @@ Place only **index.php** to the backend server and deploy it with Apache httpd w
 * To **set** the `key` and `value`, use `./index.php?set=key,value`.
 * To **get** the `value`, use `./index.php?get=value`.
 
-***Please place `index.php` in the blank folder because it will be create some fileIO***
+***Please place `index.php` in the blank folder because it will be create some fileIO.***
 
 ### Frontend
 Place the **all** of the files in fronend folder to desired path.
