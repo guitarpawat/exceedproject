@@ -1,7 +1,7 @@
 # 2nd Mom
 ***This is in the part of eXceed14 camp project***
 
-If you want to know more please go to http://exceed.cpe.ku.ac.th/wiki/index.php/Exceed_14_Group_14.
+If you want to know more about this project, please go to http://exceed.cpe.ku.ac.th/wiki/index.php/Exceed_14_Group_14.
 ## Configuration
 
 ### Backend
